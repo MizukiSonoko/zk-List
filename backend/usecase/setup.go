@@ -10,13 +10,17 @@ import (
 )
 
 func SetUp(ctx context.Context, req *apiv1.SetUpRequest) (*apiv1.SetUpResponse, error) {
-	p, _ := zkproofs.SetupSet(req.Ids)
-	sigs := make([]*apiv1.Signature, len(p.Signatures))
+	p, err := zkproofs.SetupSet(req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	var sigs []*apiv1.Signature
 	for k, v := range p.Signatures {
-		sigs[k] = &apiv1.Signature{
+		// Memo: p.Signatures is map[int]*bn256.G1, not slice!
+		sigs = append(sigs, &apiv1.Signature{
 			Id:        k,
 			Signature: b64.StdEncoding.EncodeToString(v.Marshal()),
-		}
+		})
 	}
 	return &apiv1.SetUpResponse{
 		H:          b64.StdEncoding.EncodeToString(p.H.Marshal()),

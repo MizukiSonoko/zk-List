@@ -11,6 +11,7 @@ import (
 	"github.com/mizukisonoko/zkmoku/log"
 	"github.com/mizukisonoko/zkmoku/usecase"
 	"github.com/morikuni/failure"
+	"go.uber.org/zap"
 )
 
 var _ apiv1connect.ZkMokuServiceHandler = (*API)(nil)
@@ -32,10 +33,12 @@ func (a *API) HealthCheck(ctx context.Context, _ *connect_go.Request[apiv1.Healt
 
 func (a *API) SetUp(ctx context.Context, req *connect_go.Request[apiv1.SetUpRequest]) (*connect_go.Response[apiv1.SetUpResponse], error) {
 	if err := ctx.Err(); err != nil {
+		log.WithContext(ctx).Error("failed to run setup", zap.Error(err))
 		return nil, err
 	}
 	resp, err := usecase.SetUp(ctx, req.Msg)
 	if err != nil {
+		log.WithContext(ctx).Info("failed to set up usecase", zap.Error(err))
 		return nil, connect_go.NewError(connect_go.CodeInternal, failure.New(errors.Internal))
 	}
 	return connect_go.NewResponse(resp), nil
