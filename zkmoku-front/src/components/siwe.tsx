@@ -15,7 +15,7 @@ function Siwe() {
 
   const handleLogin = async () => {
     try {
-      const callbackUrl = "/protected"
+      const callbackUrl = "/"
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
