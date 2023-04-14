@@ -1,0 +1,70 @@
+syntax = "proto3";
+package api.v1;
+
+import "google/protobuf/timestamp.proto";
+option go_package = "gen/proto;apiv1";
+
+message Signature {
+  int64 id = 1;
+  string signature = 2;
+}
+
+message SetUpRequest {
+  repeated int64 ids = 1;
+}
+
+message SetUpResponse {
+  string H = 1;
+  repeated Signature signatures = 2;
+  string KpPubk = 3;
+}
+
+message ProveRequest {
+  string H = 1;
+  string pub = 2;
+  repeated Signature signatures = 3;
+  int64 val = 4;
+}
+
+message ProveResponse {
+  string V = 1;
+  string D = 2;
+  string C = 3;
+  string A = 4;
+  string Zsig = 5;
+  string Zv = 6;
+  string Cc = 7;
+  string M = 8;
+  string Zr = 9;
+}
+
+message VerifyRequest {
+  string H = 1;
+  string pub = 2;
+
+  string V = 3;
+  string D = 4;
+  string C = 5;
+  string A = 6;
+  string Zsig = 7;
+  string Zv = 8;
+  string Cc = 9;
+  string M = 10;
+  string Zr = 11;
+}
+
+message VerifyResponse {
+  uint64 id = 1;
+  bool result = 2;
+}
+
+service ZkMokuService {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {}
+  rpc SetUp(SetUpRequest) returns (SetUpResponse) {}
+  rpc Prove(ProveRequest) returns (ProveResponse) {}
+  rpc Verify(VerifyRequest) returns (VerifyResponse) {}
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {}
