@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { SetupContainer } from '@/styles/setup';
+import SetUpForm from '@/components/SetUpForm';
+import ProveForm from '@/components/ProveForm';
 
 interface TabContentProps {
   activeTab: string;
@@ -13,11 +16,10 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
 
   if (activeTab === 'SetUp') {
     return (
-      <div className="p-2 black ">
-        <label>SetUp Input:</label>
-        <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+      <SetupContainer>
+        <label className="name" >SetUp Group:</label><br/>
+        <SetUpForm />
+      </SetupContainer>
     );
   }
 
@@ -25,8 +27,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
     return (
       <div>
         <label>Prove Input:</label>
-        <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-        <button onClick={handleSubmit}>Submit</button>
+        <ProveForm />
       </div>
     );
   }
