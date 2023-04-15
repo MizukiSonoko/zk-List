@@ -17,21 +17,24 @@ const ProveForm: React.FC = () => {
     address: contractAddr,
     abi: ABI.abi,
     functionName: 'getGroups',
-  });
-  (data as unknown as any).map((group: any) => {
-    const decodedBase64 = decodeBase64(group.signature);
-    const belongs: { key: string, value: string, name: string }[]=
-      Object.entries(JSON.parse(decodedBase64)).
-        map(([key, value]) => ({ key, value: value as string, name: "" }));
-    groupList.push({
-      name: group.name,
-      content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
-      belongs: belongs.map((v: { key: string, value: string, name: string }) => 
-        ({ key: v.key, value: v.value, name: bigIntToAscii(BigInt(v.key)) })),
-      signature: group.signature,
-      h: group.h,
-      pub: group.kpPub,
-    });
+    onSuccess: (data: any) => {
+      console.log("data: ", data);
+      (data as unknown as any).map((group: any) => {
+        const decodedBase64 = decodeBase64(group.signature);
+        const belongs: { key: string, value: string, name: string }[]=
+          Object.entries(JSON.parse(decodedBase64)).
+            map(([key, value]) => ({ key, value: value as string, name: "" }));
+        groupList.push({
+          name: group.name,
+          content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
+          belongs: belongs.map((v: { key: string, value: string, name: string }) => 
+            ({ key: v.key, value: v.value, name: bigIntToAscii(BigInt(v.key)) })),
+          signature: group.signature,
+          h: group.h,
+          pub: group.kpPub,
+        });
+      });    
+    }
   });
 
   return (
