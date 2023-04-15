@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	b64 "encoding/base64"
-	"fmt"
 
 	"github.com/MizukiSonoko/zkproofs/go-ethereum/crypto/bn256"
 	"github.com/MizukiSonoko/zkproofs/go-ethereum/zkproofs"
@@ -85,9 +84,7 @@ func Verify(ctx context.Context, req *apiv1.VerifyRequest) (*apiv1.VerifyRespons
 	proof_out.Zv = zkproofs.GetBigInt(verifDataObject.Zv)
 	proof_out.Cc = zkproofs.GetBigInt(verifDataObject.Cc)
 
-	// spew.Dump(proof_out)
 	result, _ = zkproofs.VerifySet(proof_out, pm)
-	fmt.Printf("result::%v", result)
 	return &apiv1.VerifyResponse{
 		Result: result,
 	}, nil
