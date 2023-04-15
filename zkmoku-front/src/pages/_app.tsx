@@ -6,10 +6,10 @@ import { SessionProvider } from "next-auth/react"
 
 import { publicProvider } from "wagmi/providers/public"
 import { WagmiConfig, createClient, configureChains } from "wagmi"
-import { mainnet, polygon, optimism } from 'wagmi/chains'
+import { polygon } from 'wagmi/chains'
 
 export const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism],
+  [polygon],
   [publicProvider()]
 )
 

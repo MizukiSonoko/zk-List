@@ -2,79 +2,40 @@
 import React, { useState } from 'react';
 import { useClient } from '@/components/Backend/BackendProvider';
 import { ZkMokuService } from '@/proto/api_connectweb';
-
-type Signature = {
-  id: number;
-  signature: string;
-};
+import GroupTableList from '@/components/GroupTableList';
+import { useContractRead } from 'wagmi'
+import ABI from "@/contracts/ZkMoku.sol/ZkMoku.json";
+import { decodeBase64 } from '@/utils/base64';
+import { bigIntToAscii } from '@/utils/converters';
+import { GroupItem } from '@/types/GroupItem';
+import { contractAddr } from '@/utils/contract';
 
 const ProveForm: React.FC = () => {
-  const [H, setH] = useState('');
-  const [pub, setPub] = useState('');
-  const [signature, setSignature] = useState('');
-  const [val, setVal] = useState(0);
-  const client = useClient(ZkMokuService);
-  const [response, setResponse] = useState('');
-
+  const groupList: GroupItem[] = [];
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Submitted ProveRequest:', { H, pub, signature, val });
-
-    client
-      .prove({
-        H: H,
-        pub: pub,
-        signature: signature,
-        val: BigInt(val),        
-      })
-      .then((resp) => {
-        console.log("OK!", resp.toJsonString());
-        setResponse(resp.toJsonString());
-      }).catch((err) => { console.log(err) })
-  };
+  const { data, isError, isLoading, refetch } = useContractRead({
+    address: contractAddr,
+    abi: ABI.abi,
+    functionName: 'getGroups',
+  })
+  data?.map((group: any) => {
+    const decodedBase64 = decodeBase64(group.signature);
+    const belongs: { key: string, value: string, name: string }[]=
+      Object.entries(JSON.parse(decodedBase64)).
+        map(([key, value]) => ({ key, value: value as string, name: "" }));
+    groupList.push({
+      name: "name",
+      content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
+      belongs: belongs.map((v: { key: string, value: string, name: string }) => 
+        ({ key: v.key, value: v.value, name: bigIntToAscii(BigInt(v.key)) })),
+      signature: group.signature,
+      h: group.h,
+      pub: group.kpPub,
+    });
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="H">H:</label>
-        <input
-          id="H"
-          type="text"
-          value={H}
-          onChange={(e) => setH(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="pub">pub:</label>
-        <input
-          id="pub"
-          type="text"
-          value={pub}
-          onChange={(e) => setPub(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="sig">sig:</label>
-        <input
-          id="sig"
-          type="text"
-          value={signature}
-          onChange={(e) => setSignature(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="val">val:</label>
-        <input
-          id="val"
-          type="number"
-          value={val}
-          onChange={(e) => setVal(parseInt(e.target.value))}
-        />
-      </div>
-      <button type="submit">Submit</button>
-      {response && <p>{response}</p>}
-    </form>
+    <GroupTableList groupList={groupList}/>
   );
 };
 

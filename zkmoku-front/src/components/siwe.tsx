@@ -2,7 +2,7 @@ import { getCsrfToken, signIn, useSession } from "next-auth/react"
 import { SiweMessage } from "siwe"
 import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 function Siwe() {
   const { signMessageAsync } = useSignMessage()
