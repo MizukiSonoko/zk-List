@@ -2,6 +2,8 @@
 pragma solidity ^0.8.9;
 
 struct Group {
+  uint256 id;
+  string name;
   string h;
   string kpPub;
   string signature;
@@ -25,7 +27,7 @@ interface IZkMoku {
   /**
    * @dev Register Group
    */
-  function regiserGroup(string calldata h, string calldata kpPub, string calldata signature) external;
+  function regiserGroup(string calldata name, string calldata h, string calldata kpPub, string calldata signature) external;
 
   /**
    * @dev Get Registered Group
@@ -42,5 +44,6 @@ interface IZkMoku {
    * @dev Mint Proof
    */
   function mintProof(uint256 id, Proof calldata proof, address holder) external;
- 
+
+  function getTokenUrls(address holder) external view returns (uint256[] memory);
 }
