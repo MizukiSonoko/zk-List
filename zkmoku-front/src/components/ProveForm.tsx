@@ -24,7 +24,7 @@ const ProveForm: React.FC = () => {
       Object.entries(JSON.parse(decodedBase64)).
         map(([key, value]) => ({ key, value: value as string, name: "" }));
     groupList.push({
-      name: "name",
+      name: group.name,
       content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
       belongs: belongs.map((v: { key: string, value: string, name: string }) => 
         ({ key: v.key, value: v.value, name: bigIntToAscii(BigInt(v.key)) })),

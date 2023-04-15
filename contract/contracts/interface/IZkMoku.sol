@@ -39,7 +39,6 @@ interface IZkMoku {
    */
   function getGroup(uint256 id) external view returns (Group memory);
 
-
   /**
    * @dev Mint Proof
    */
