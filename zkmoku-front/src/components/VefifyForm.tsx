@@ -10,7 +10,6 @@ import ProofTableList from './ProofTableList';
 const VerifyForm: React.FC = () => {
   const tokenList: Token[] = [];
   const tokenIds: BigInt[] = [];
-  const [loaded, setLoaded] = useState(false);
   {
     const { data } = useContractRead({
       address: contractAddr,
@@ -18,7 +17,7 @@ const VerifyForm: React.FC = () => {
       functionName: 'getTokenUrls',
       args:["0xDB10E4a083B87e803594c12c679422dCe5FCCCB9"]
     })
-
+    console.log("data1", data);
     (data as unknown as BigInt[]).forEach((id) => {
       tokenIds.push(id);
     });
@@ -30,7 +29,7 @@ const VerifyForm: React.FC = () => {
         args: [tokenIds[i]],
       });
       tokenList.push(JSON.parse(
-        decodeBase64(data.split('data:application/json;base64,')[1])));
+        decodeBase64((data as string).split('data:application/json;base64,')[1])));
     }
   }
  

@@ -17,8 +17,8 @@ const ProveForm: React.FC = () => {
     address: contractAddr,
     abi: ABI.abi,
     functionName: 'getGroups',
-  })
-  data?.map((group: any) => {
+  });
+  (data as unknown as any).map((group: any) => {
     const decodedBase64 = decodeBase64(group.signature);
     const belongs: { key: string, value: string, name: string }[]=
       Object.entries(JSON.parse(decodedBase64)).
