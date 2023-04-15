@@ -15,7 +15,12 @@ interface ProofTableListProps {
 
 const VerifyForm: React.FC<ProofTableListProps> = ({tokenList}) => {
   return (
-    <ProofTableList tokenList={tokenList}/>
+    <div className="w-full bg-gray-100 shadow px-8 py-4 max-w-xl mx-auto">
+      <label className="font-bold text-xl" >I belong to a group of </label>
+      <p className="text-base">Current Groups</p>
+      <br/>
+      <ProofTableList tokenList={tokenList}/>
+    </div>
   );
 }
 

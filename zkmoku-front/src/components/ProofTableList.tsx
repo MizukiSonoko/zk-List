@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useClient } from '@/components/Backend/BackendProvider';
 import { ZkMokuService } from '@/proto/api_connectweb';
 import { Token } from '@/types/Token';
-import { contractAddr } from '@/utils/contract';
-import ABI from "@/contracts/ZkMoku.sol/ZkMoku.json";
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
+import NextImage from 'next/image';
 
 interface ProofTableListProps {
   tokenList: Token[];
@@ -42,28 +40,29 @@ const TableList: React.FC<ProofTableListProps> = ({tokenList}) => {
   };
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Content</th>
-          <th>Submit</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tokenList.map((item, index) => (
-          <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.description}</td>
-            <td>
-              <button onClick={() => handleSubmit(index)}>Submit</button>
-            </td>
-            <td>{result}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {tokenList.map((item, index) => (
+        <div
+          key={index}
+          className="p-6 my-3 bg-white border border-gray-200 rounded-lg shadow">
+          <div className='flex justify-start'>
+            <NextImage
+              src={item.image}
+              alt={item.name}
+              width={50}
+              height={50}
+            />
+            <h5 className="mx-4 mt-2 text-2xl font-bold tracking-tight text-gray-900">{item.name}</h5>
+          </div>
+          <p className="mb-3 font-normal text-gray-700">{item.description}</p>
+          <div className='flex justify-end'>
+            <button
+              className="inline-flex items-end px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+              onClick={() => handleSubmit(index)}>Verify It!</button>
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 

@@ -69,8 +69,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
 
   if (activeTab === 'Verify') {
     return (
-      <div>
-        <label>Verify Input:</label>
+      <div className='p-4'>
         <VerifyForm tokenList={tokenList}/>
       </div>
     );
