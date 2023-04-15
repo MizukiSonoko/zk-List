@@ -22,26 +22,24 @@ interface Proof {
   zr: string;
 }
 
-
 const TableList: React.FC<TableListProps> = ({groupList}) => {
   const [selectedContent, setSelectedContent] = useState<Array<string | undefined>>(Array(0).fill(undefined));
   const [addresses, setAddresses] = useState<Array<string>>(Array(0).fill(''));
-  const [selectedAddress, setSelectedAddress] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState(""); 
   
   const [groupId, setGroupId] = useState(0);
   const [proof, setProof] = useState<Proof>({
-    v: 'v',
-    d: 'd',
-    c: 'c',
-    a: 'a',
-    zSig: 'zSig',
-    zv: 'zv',
-    cc: 'cc',
-    m: 'm',
-    zr: 'zr'
+    v: '',
+    d: '',
+    c: '',
+    a: '',
+    zSig: '',
+    zv: '',
+    cc: '',
+    m: '',
+    zr: ''
   });
   
-
   const client = useClient(ZkMokuService);
   const { config } = usePrepareContractWrite({
     address: contractAddr,
@@ -105,48 +103,83 @@ const TableList: React.FC<TableListProps> = ({groupList}) => {
         })
         setGroupId(index);
         setSelectedAddress(addresses[index])
-        write?.();
+        // write?.();
       }).catch((err) => { console.log(err) })
   };
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Content</th>
-          <th>Select Content</th>
-          <th>Input Text</th>
-          <th>Submit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {groupList.map((item, index) => (
-          <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.content.join(', ')}</td>
-            <td>
-              <select value={selectedContent[index] || ''} onChange={(e) => handleSelectChange(e, index)}>
-                <option value="" disabled>
-                  Select...
-                </option>
-                {item.content.map((contentItem, contentIndex) => (
-                  <option key={contentIndex} value={contentItem}>
-                    {contentItem}
-                  </option>
-                ))}
-              </select>
-            </td>
-            <td>
-              <input type="text" value={addresses[index]} onChange={(e) => handleInputChange(e, index)} />
-            </td>
-            <td>
-              <button onClick={() => handleSubmit(index)}>Submit</button>
-            </td>
+  const handleWrite = () => {
+    write?.();
+  }
+
+  return (    
+    <>
+      <table className="hover:table-auto w-full rounded-sm">
+        <thead className="text-xs py-2 text-black uppercase bg-gray-50">
+          <tr>
+            <th className="py-2">Name</th>
+            <th>Elements</th>
+            <th>Select Content</th>
+            <th>Target Wallet Addr</th>
+            <th>Submit</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {groupList.map((item, index) => (
+            <tr key={index} className="bg-white border-b hover:bg-gray-50">
+              <td className="text-center p-3">{item.name}</td>
+              <td className="text-center" >{item.content.join(', ')}</td>
+              <td>
+                <select
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+                  value={selectedContent[index] || ''} onChange={(e) => handleSelectChange(e, index)}>
+                  <option value="" disabled>
+                    Select One
+                  </option>
+                  {item.content.map((contentItem, contentIndex) => (
+                    <option key={contentIndex} value={contentItem}>
+                      {contentItem}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td className='px-4'>
+                <input 
+                  className="shadow text-xs appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text" value={addresses[index]} onChange={(e) => handleInputChange(e, index)} />
+              </td>
+              <td className="text-center">
+                <button
+                  disabled={selectedContent[index] === undefined || addresses[index] === undefined}
+                  className={`${
+                    selectedContent[index] === undefined || addresses[index] === undefined ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-700 active:bg-blue-800'
+                  } text-right rounded-md px-3 py-1 bg-blue-500 text-white font-bold`}
+                  onClick={() => handleSubmit(index)}>Make Proof</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <hr/>
+      {proof.v.length !== 0 && 
+        <div className="mt-5">
+          <p className="font-bold text-xl">Generated Proof</p>
+          <div className='my-2 border-2 border-gray-300 p-2 break-words'>
+            {Object.entries(proof).map(([key, value]) => (
+              <div key={key}>
+                <p>{key}:</p>
+                <p className="text-xs mb-1">{value}</p>
+              </div>
+            ))}
+          </div>
+          <div className='my-4 flex justify-end'>
+            <button 
+              className="text-right rounded-md px-3 py-1 bg-red-500 text-white font-bold" disabled={!write || isLoading} onClick={handleWrite}>
+              {isLoading ? 'Waiting...' : 'Mint Proof NFT'}
+            </button>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 

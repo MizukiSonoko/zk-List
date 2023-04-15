@@ -35,7 +35,7 @@ function Siwe() {
         callbackUrl,
       })
     } catch (error) {
-      window.alert(error)
+      console.error(error);
     }
   }
 
@@ -48,6 +48,7 @@ function Siwe() {
 
   return (
     <button
+      className={`'hover:bg-blue-700 active:bg-blue-800 bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
       onClick={(e) => {
         e.preventDefault()
         if (!isConnected) {

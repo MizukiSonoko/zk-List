@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { SetupContainer } from '@/styles/setup';
 import SetUpForm from '@/components/SetUpForm';
 import ProveForm from '@/components/ProveForm';
 import VerifyForm from './VefifyForm';
@@ -54,17 +53,15 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
 
   if (activeTab === 'SetUp') {
     return (
-      <SetupContainer>
-        <label className="name" >SetUp Group:</label><br/>
+      <div className='p-4'>
         <SetUpForm />
-      </SetupContainer>
+      </div>
     );
   }
 
   if (activeTab === 'Prove') {
     return (
-      <div>
-        <label>Prove Input:</label>
+      <div className='p-4'>
         <ProveForm />
       </div>
     );

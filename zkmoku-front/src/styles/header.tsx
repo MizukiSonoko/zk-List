@@ -7,12 +7,6 @@ export const HeaderContainer = styled.div`
   padding: 1rem;
   background-color: white;
 
-  .logo {
-    color: black;
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-
   .login-btn {
     cursor: pointer;
     background-color: #007bff;

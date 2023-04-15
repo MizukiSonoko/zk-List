@@ -40,7 +40,12 @@ const ProveForm: React.FC = () => {
   });
 
   return (
-    <GroupTableList groupList={groupList}/>
+    <div className="w-full bg-gray-100 shadow px-8 py-4 max-w-5xl mx-auto">
+      <label className="font-bold text-xl" >Make Prove NFT</label>
+      <p className="text-base">Current Registered Group as Follows</p>
+      <br/>
+      <GroupTableList groupList={groupList}/>
+    </div>
   );
 };
 

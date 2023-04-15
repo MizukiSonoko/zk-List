@@ -2,8 +2,6 @@ import React from 'react';
 import { HeaderContainer } from '@/styles/header';
 import { useDisconnect, useNetwork } from "wagmi"
 import { signOut, useSession } from "next-auth/react"
-import { signIn } from 'next-auth/react'
-import Link from "next/link"
 import Siwe from './siwe';
 
 const Header: React.FC = () => {
@@ -13,10 +11,9 @@ const Header: React.FC = () => {
   const loading = status === "loading"
   const { disconnect } = useDisconnect()
   
-  console.log(session);
   return (
-    <HeaderContainer>
-      <div className="logo">zkMoku</div>
+    <div className='flex justify-between items-center p-4 bg-white'>
+      <div className="font-bold text-2xl">zkMoku</div>
       <div>
         <p
         >
@@ -41,7 +38,7 @@ const Header: React.FC = () => {
           )}
         </p>
       </div>
-    </HeaderContainer>
+    </div>
   );
 };
 
