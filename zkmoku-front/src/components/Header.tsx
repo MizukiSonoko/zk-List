@@ -33,7 +33,7 @@ const Header: React.FC = () => {
                 }}
               >
                 <strong>{session.user.name?.slice(0, 8)}</strong>
-              </a>/ { chain?.name }
+              </a> / { chain?.name }
             </>
           )}
         </p>

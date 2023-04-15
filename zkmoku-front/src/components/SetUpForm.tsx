@@ -128,7 +128,7 @@ const SetUpForm: React.FC = () => {
       <p className="text-right text-xs">Only SetUp. not send tx</p>
       <div className='my-1 flex justify-end'>
         <div>
-          <button className="text-right rounded-md px-3 py-1 bg-blue-500 text-white font-bold" type="submit">MakeProof</button>
+          <button className="text-right rounded-md px-3 py-1 bg-blue-500 text-white font-bold" type="submit">SetUp</button>
         </div>
       </div>
       {response.H.length !== 0 && 
