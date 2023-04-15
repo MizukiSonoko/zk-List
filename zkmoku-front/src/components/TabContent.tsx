@@ -9,25 +9,47 @@ import { contractAddr } from '@/utils/contract';
 import { Token } from '@/types/Token';
 import { ethers } from 'ethers';
 import { useProvider } from 'wagmi';
+import { GroupItem } from '@/types/GroupItem';
+import { bigIntToAscii } from '@/utils/converters';
 
 interface TabContentProps {
   activeTab: string;
 }
 
 const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
+  const [verifyWalletAddr, setVerifyWalletAddr] = useState<string>("");
 
   const [tokenList, setTokenList] = useState<Token[]>([]);
+  const [groupList, setGroupList] = useState<GroupItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const provider = useProvider();
 
   useEffect(()=>{
-    if (isConnected) {
       const zkMoku = new ethers.Contract(contractAddr, ABI.abi, provider);
-    
-      if(!loading) {
+      if(!loading && verifyWalletAddr.length !== 0) {
         setLoading(true);
-        zkMoku.getTokenUrls(address).then((data: any) => {
+        zkMoku.getGroups().then((data: any) => {
+          console.log("data: ", data);
+          var temp: GroupItem[] = [];
+          (data as unknown as any).map((group: any) => {
+            const decodedBase64 = decodeBase64(group.signature);
+            const belongs: { key: string, value: string, name: string }[]=
+              Object.entries(JSON.parse(decodedBase64)).
+                map(([key, value]) => ({ key, value: value as string, name: "" }));
+            temp.push({
+              name: group.name,
+              content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
+              belongs: belongs.map((v: { key: string, value: string, name: string }) => 
+                ({ key: v.key, value: v.value, name: bigIntToAscii(BigInt(v.key)) })),
+              signature: group.signature,
+              h: group.h,
+              pub: group.kpPub,
+            });
+            setGroupList(temp);
+          });
+        });
+        zkMoku.getTokenUrls(verifyWalletAddr).then((data: any) => {
           var tokenIds: BigInt[] = [];
           if (data){
             (data as unknown as BigInt[]).forEach((id) => {
@@ -47,8 +69,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
         }); 
         setLoading(false);
       }
-    }
-  }, [isConnected, address, loading, provider]);
+  }, [isConnected, verifyWalletAddr, loading, provider]);
   
 
   if (activeTab === 'SetUp') {
@@ -70,7 +91,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
   if (activeTab === 'Verify') {
     return (
       <div className='p-4'>
-        <VerifyForm tokenList={tokenList}/>
+        <VerifyForm setVerifyWalletAddr={setVerifyWalletAddr} groupList={groupList} tokenList={tokenList}/>
       </div>
     );
   }

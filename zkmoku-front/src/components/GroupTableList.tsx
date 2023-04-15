@@ -71,16 +71,6 @@ const TableList: React.FC<TableListProps> = ({groupList}) => {
   };
 
   const handleSubmit = (index: number) => {
-    console.log('Submitted:', {
-      selectedContent: selectedContent[index],
-      inputText: addresses[index],
-      groupList: groupList[index],
-      H: groupList[index].h,
-      pub: groupList[index].pub,
-      signature: groupList[index].signature,
-      val: groupList[index].belongs.filter((item) => item.name === selectedContent[index]).map((item) => BigInt(item.key))[0],
-    });
-
     client
       .prove({
         H: groupList[index].h,
