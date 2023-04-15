@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import { IZkMoku, Group, Proof, Signature } from "./interface/IZkMoku.sol";
+import { IZkMoku, Group, Proof } from "./interface/IZkMoku.sol";
 import { ERC721, IERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { Counters } from "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -45,17 +45,16 @@ contract ZkMoku is
         return groups[id];
     }
 
-    function regiserGroup(string memory h, string memory kpPub, Signature[] memory signatures) external {
+    function regiserGroup(string memory h, string memory kpPub, string memory signature) external {
         Group storage newGroup = groups[nextGroupId];
         require(bytes(h).length != 0, "h must not be empty");
         require(bytes(kpPub).length != 0, "kpPub must not be empty");
-        require(signatures.length != 0, "signatures must not be empty");
+        require(bytes(signature).length != 0, "signature must not be empty");
 
         newGroup.h = h;
         newGroup.kpPub = kpPub;
-        for (uint256 i = 0; i < signatures.length; i++) {
-            newGroup.signatures.push(signatures[i]);
-        }
+        newGroup.signature = signature; 
+        
         nextGroupId++;
     }
 
@@ -73,11 +72,16 @@ contract ZkMoku is
 
         Proof storage proof = tokenIdproofs[tokenId];
 
-        // JSON 形式のメタデータを動的に構築します。
+        uint256 groupId = tokenIdgroupId[tokenId];
+        Group storage group = groups[groupId];
+
         string memory json = string(abi.encodePacked(
             '{',
                 '"tokenId": "', tokenId.toString(), '",',
                 '"proof": {',
+                    '"h": "',     group.h, '",',
+                    '"kpPub": "', group.kpPub, '",',
+                
                     '"v": "', proof.v, '",',
                     '"d": "', proof.d, '",',
                     '"c": "', proof.c, '",',

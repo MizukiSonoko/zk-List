@@ -27,6 +27,9 @@ const SetUpForm: React.FC = () => {
     }
   };
 
+  const handleRegisterGroup = () => {
+  } 
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Submitted numbers:', names);

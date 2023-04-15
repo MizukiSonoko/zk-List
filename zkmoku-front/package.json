@@ -7,7 +7,8 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "gen": "cd ../backend && make gen && cp ./gen/proto/*.ts ../zkmoku-front/src/proto"
+    "gen": "cd ../backend && make gen && cp ./gen/proto/*.ts ../zkmoku-front/src/proto",
+    "contract": "cp -R ../contract/artifacts/contracts/ src/contracts/"
   },
   "dependencies": {
     "@bufbuild/connect-web": "^0.8.6",

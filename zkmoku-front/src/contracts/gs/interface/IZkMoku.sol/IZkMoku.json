@@ -1,0 +1,189 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IZkMoku",
+  "sourceName": "contracts/interface/IZkMoku.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "member",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint120",
+          "name": "value",
+          "type": "uint120"
+        }
+      ],
+      "name": "RegiserGroup",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getGroup",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "h",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "kpPub",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "signature",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Group",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getGroups",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "h",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "kpPub",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "signature",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Group[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "v",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "d",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "c",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "a",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "zSig",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "zv",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "cc",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "m",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "zr",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Proof",
+          "name": "proof",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "holder",
+          "type": "address"
+        }
+      ],
+      "name": "mintProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "h",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "kpPub",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "signature",
+          "type": "string"
+        }
+      ],
+      "name": "regiserGroup",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

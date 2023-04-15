@@ -11,39 +11,21 @@ type Signature = {
 const ProveForm: React.FC = () => {
   const [H, setH] = useState('');
   const [pub, setPub] = useState('');
-  const [signatures, setSignatures] = useState<Signature[]>([]);
+  const [signature, setSignature] = useState('');
   const [val, setVal] = useState(0);
   const client = useClient(ZkMokuService);
   const [response, setResponse] = useState('');
 
-  const handleAddSignature = () => {
-    setSignatures([...signatures, { id: 0, signature: '' }]);
-  };
-
-  const handleRemoveSignature = (index: number) => {
-    setSignatures(signatures.filter((_, i) => i !== index));
-  };
-
-  const handleSignatureChange = (index: number, field: keyof Signature, value: string | number) => {
-    setSignatures((prevSignatures) => {
-      const newSignatures = [...prevSignatures];
-      newSignatures[index] = { ...newSignatures[index], [field]: value };
-      return newSignatures;
-    });
-  };
-
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitted ProveRequest:', { H, pub, signatures, val });
+    console.log('Submitted ProveRequest:', { H, pub, signature, val });
 
     client
       .prove({
         H: H,
         pub: pub,
-        signatures: signatures.map((signature) => ({
-          id: BigInt(signature.id),
-          signature: signature.signature,
-        })),
+        signature: signature,
         val: BigInt(val),        
       })
       .then((resp) => {
@@ -73,30 +55,13 @@ const ProveForm: React.FC = () => {
         />
       </div>
       <div>
-        {signatures.map((signature, index) => (
-          <div key={index}>
-            <label htmlFor={`id-${index}`}>ID:</label>
-            <input
-              id={`id-${index}`}
-              type="number"
-              value={signature.id}
-              onChange={(e) => handleSignatureChange(index, 'id', parseInt(e.target.value))}
-            />
-            <label htmlFor={`signature-${index}`}>Signature:</label>
-            <input
-              id={`signature-${index}`}
-              type="text"
-              value={signature.signature}
-              onChange={(e) => handleSignatureChange(index, 'signature', e.target.value)}
-            />
-            <button type="button" onClick={() => handleRemoveSignature(index)}>
-              Remove
-            </button>
-          </div>
-        ))}
-        <button type="button" onClick={handleAddSignature}>
-          Add Signature
-        </button>
+        <label htmlFor="sig">sig:</label>
+        <input
+          id="sig"
+          type="text"
+          value={signature}
+          onChange={(e) => setSignature(e.target.value)}
+        />
       </div>
       <div>
         <label htmlFor="val">val:</label>
@@ -114,3 +79,7 @@ const ProveForm: React.FC = () => {
 };
 
 export default ProveForm;
+
+/*
+{"H":"IGBm3pCN+GdujqYteTWGAddoA2ok03QqELPGC4RsMlgtC4SMq+329hGZOODHKduGCsSpxL2G4hAsACLI9WJ0zhNf9r6WbuauLMEHZc+DbTpBHCHK2T4dbiujnrHVxTKML9ni9PJnTBanSQM2ggax+H1+8oM2qiVmU1AB0ufhbdE=","signature":"eyIxNjM0MzAyNTgxIjoiRW16UUUwZ3REM0lpZVRxYlJ0M1NwY3Q2TjF3UytiQnVDMG5DOUFDL2Vib2lxeE1jTVpCcnBjODFqU3pqWjJGYWtMa3NkWGoyWVJhcjRzMHhhSHM4RkFmNmFBb0hYY2pod2xJdU9Ra0JacG9uNGhod0VvWHgxKy9XR0RlenBiTCtCdmc4RWlIN2o2bEhzcUZxa1FBUzhxWjhYMlF6N0NtNU12MzA5M1RWNTA0PSIsIjQ2OTkyMDUzODk4NSI6IkZwN0hhTTQwdVlRSVBWYk1qR2doRkQ1UlNxMWZ6akhtdVJpVVdISnRxcEFPZGVDQjVNRGFYenUrNVo2TUF4YnJab3hCdkFLcjVrcnR2RzNaU3lSTlNDU083ODhTN2xxaWdaaEJPc0lheTNGRzdGNXZJbmJaQUNWeHhxeGF0akRmR3kwdDl4SGdnOFZINTJmQlBwbk12VXY0aGFBYm5kYzZJSk44N1JSY2M0ST0iLCI1MDAwODU1MjA3NTEiOiJIQTdFcmZvRnliMmg1azEzY1B3aU1tSVBYb2FWRXpvaG9uTE10T01wRGN3YXhoaC92VjZnTEhoNUdDcTloOFJGMm1ZeStrV3p1a2ZKMFZWRWtEWGNZU1hFd2pFNlZtMWRjTnlBZTRmUDMxWG9MbE5NMVFVY0dvK3U3MTJPcm0zOEtzMGVKeVd1SWs3eHVPWW8vNkJiQnFQRVFHYll0N2V4OHJIdnBMWmlJUUE9In0=","KpPubk":"CvSHjD9bd52qs1sxTB9d+vDWtWHXlCzLPLGx61e22OUE5QX8jEg/7PNkHhR6cmrHqtIOXHvN5N2ERq0gfQY7/w=="}
+*/

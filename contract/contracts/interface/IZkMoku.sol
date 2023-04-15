@@ -1,15 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-struct Signature {
-  int64 id;
-  string signature;
-}
-
 struct Group {
   string h;
   string kpPub;
-  Signature[] signatures;
+  string signature;
 }
 
 struct Proof {
@@ -30,7 +25,7 @@ interface IZkMoku {
   /**
    * @dev Register Group
    */
-  function regiserGroup(string calldata h, string calldata kpPub, Signature[] calldata signatures) external;
+  function regiserGroup(string calldata h, string calldata kpPub, string calldata signature) external;
 
   /**
    * @dev Get Registered Group

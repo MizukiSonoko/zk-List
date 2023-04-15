@@ -31,83 +31,40 @@ describe("ZkMoku", function () {
         const { zkm, owner } = await loadFixture(deployContract);  
         const h = "IGBm3pCN+GdujqYteTWGAddoA2ok03QqELPGC4RsMlgtC4SMq+329hGZOODHKduGCsSpxL2G4hAsACLI9WJ0zhNf9r6WbuauLMEHZc+DbTpBHCHK2T4dbiujnrHVxTKML9ni9PJnTBanSQM2ggax+H1+8oM2qiVmU1AB0ufhbdE=";
         const kpPub = "GQv2/s3OU3Tiz+LQeBn5xbEnmvUObALQl1+D5PGN5hkTJFHSloQL8fMLLizCag7ZrbWj3fdgGdnTJ/6tWz0smw==";
-        const signatures = [
-          {
-            id: "500085520751",
-            signature: "ITugvC40rtDRSlEJhy1XN8gfX/K1TMylzdO4CapA3EwJ+3+V4FS4DGbbel+eDldg7m2kZMmdaC92rJ5lhnzywSKUO5KYkSuv3EOuGv8MeTY7Y1xTAKPX4nlKaIjiFegBLKh1wys4MbaHx92awvi3nZYD+Z95Cc3yAA25P+gEC+g="
-          },
-          {
-            id: "1634302581",
-            signature: "HZZEK4e41bbmXjsX2DkIReXeP2cUEXejMARv9vqVjdYO6IjpYUfP1uwcvhgWy0xnYMAZckvP0y+cFwdP2urdvgCzR80a+tAjVHydrMB6xn5u3tasvXVc4UiOPqL7379xGZSjYKsf4nDd9apyq9gOjn6ECUrV2JqyD9ZuNYHPuxk=",
-          },
-          {
-            id: "440056640873",
-            signature: "Byp+fyCRyDLIUz+/wzePacemjB7gNhZasNqR5fksGsMUnHMWqa68w8ItMixEDNegBf4VkYBGQenlDaSKX9Dv2xammUPwRK8822D83Ty5dAatS24l8KyRxDrT+cIZDRvXGuWTViIbmHdG76SNpwqHAkAaGcTBAlkFPlXOQO+imLw=",
-          },
-        ];
+        const signature = "eyIxNjM0MzAyNTgxIjoiRW16UUUwZ3REM0lpZVRxYlJ0M1NwY3Q2TjF3UytiQnVDMG5DOUFDL2Vib2lxeE1jTVpCcnBjODFqU3pqWjJGYWtMa3NkWGoyWVJhcjRzMHhhSHM4RkFmNmFBb0hYY2pod2xJdU9Ra0JacG9uNGhod0VvWHgxKy9XR0RlenBiTCtCdmc4RWlIN2o2bEhzcUZxa1FBUzhxWjhYMlF6N0NtNU12MzA5M1RWNTA0PSIsIjQ2OTkyMDUzODk4NSI6IkZwN0hhTTQwdVlRSVBWYk1qR2doRkQ1UlNxMWZ6akhtdVJpVVdISnRxcEFPZGVDQjVNRGFYenUrNVo2TUF4YnJab3hCdkFLcjVrcnR2RzNaU3lSTlNDU083ODhTN2xxaWdaaEJPc0lheTNGRzdGNXZJbmJaQUNWeHhxeGF0akRmR3kwdDl4SGdnOFZINTJmQlBwbk12VXY0aGFBYm5kYzZJSk44N1JSY2M0ST0iLCI1MDAwODU1MjA3NTEiOiJIQTdFcmZvRnliMmg1azEzY1B3aU1tSVBYb2FWRXpvaG9uTE10T01wRGN3YXhoaC92VjZnTEhoNUdDcTloOFJGMm1ZeStrV3p1a2ZKMFZWRWtEWGNZU1hFd2pFNlZtMWRjTnlBZTRmUDMxWG9MbE5NMVFVY0dvK3U3MTJPcm0zOEtzMGVKeVd1SWs3eHVPWW8vNkJiQnFQRVFHYll0N2V4OHJIdnBMWmlJUUE9In0=";
   
-        await zkm.connect(owner).regiserGroup(h, kpPub, signatures);
+        await zkm.connect(owner).regiserGroup(h, kpPub, signature);
   
         const group = await zkm.getGroup(0);
         expect(group.h).to.equal(h);
         expect(group.kpPub).to.equal(kpPub);
-        expect(group.signatures.length).to.equal(signatures.length);
-        for (let i = 0; i < signatures.length; i++) {
-          expect(group.signatures[i].id).to.equal(signatures[i].id);
-          expect(group.signatures[i].signature).to.equal(signatures[i].signature);
-        }
+        expect(group.signature).to.equal(signature);
       });
 
       it("Should fail when trying to register a group with an empty h", async function () {
         const { zkm, owner } = await loadFixture(deployContract);
         const emptyH = "";
         const kpPub = "GQv2/s3OU3Tiz+LQeBn5xbEnmvUObALQl1+D5PGN5hkTJFHSloQL8fMLLizCag7ZrbWj3fdgGdnTJ/6tWz0smw==";
-        const signatures = [
-          {
-            id: "500085520751",
-            signature: "ITugvC40rtDRSlEJhy1XN8gfX/K1TMylzdO4CapA3EwJ+3+V4FS4DGbbel+eDldg7m2kZMmdaC92rJ5lhnzywSKUO5KYkSuv3EOuGv8MeTY7Y1xTAKPX4nlKaIjiFegBLKh1wys4MbaHx92awvi3nZYD+Z95Cc3yAA25P+gEC+g="
-          },
-          {
-            id: "1634302581",
-            signature: "HZZEK4e41bbmXjsX2DkIReXeP2cUEXejMARv9vqVjdYO6IjpYUfP1uwcvhgWy0xnYMAZckvP0y+cFwdP2urdvgCzR80a+tAjVHydrMB6xn5u3tasvXVc4UiOPqL7379xGZSjYKsf4nDd9apyq9gOjn6ECUrV2JqyD9ZuNYHPuxk=",
-          },
-          {
-            id: "440056640873",
-            signature: "Byp+fyCRyDLIUz+/wzePacemjB7gNhZasNqR5fksGsMUnHMWqa68w8ItMixEDNegBf4VkYBGQenlDaSKX9Dv2xammUPwRK8822D83Ty5dAatS24l8KyRxDrT+cIZDRvXGuWTViIbmHdG76SNpwqHAkAaGcTBAlkFPlXOQO+imLw=",
-          },
-        ];
-  
-        await expect(zkm.connect(owner).regiserGroup(emptyH, kpPub, signatures)).to.be.revertedWith("h must not be empty");
+        const signature = "eyIxNjM0MzAyNTgxIjoiRW16UUUwZ3REM0lpZVRxYlJ0M1NwY3Q2TjF3UytiQnVDMG5DOUFDL2Vib2lxeE1jTVpCcnBjODFqU3pqWjJGYWtMa3NkWGoyWVJhcjRzMHhhSHM4RkFmNmFBb0hYY2pod2xJdU9Ra0JacG9uNGhod0VvWHgxKy9XR0RlenBiTCtCdmc4RWlIN2o2bEhzcUZxa1FBUzhxWjhYMlF6N0NtNU12MzA5M1RWNTA0PSIsIjQ2OTkyMDUzODk4NSI6IkZwN0hhTTQwdVlRSVBWYk1qR2doRkQ1UlNxMWZ6akhtdVJpVVdISnRxcEFPZGVDQjVNRGFYenUrNVo2TUF4YnJab3hCdkFLcjVrcnR2RzNaU3lSTlNDU083ODhTN2xxaWdaaEJPc0lheTNGRzdGNXZJbmJaQUNWeHhxeGF0akRmR3kwdDl4SGdnOFZINTJmQlBwbk12VXY0aGFBYm5kYzZJSk44N1JSY2M0ST0iLCI1MDAwODU1MjA3NTEiOiJIQTdFcmZvRnliMmg1azEzY1B3aU1tSVBYb2FWRXpvaG9uTE10T01wRGN3YXhoaC92VjZnTEhoNUdDcTloOFJGMm1ZeStrV3p1a2ZKMFZWRWtEWGNZU1hFd2pFNlZtMWRjTnlBZTRmUDMxWG9MbE5NMVFVY0dvK3U3MTJPcm0zOEtzMGVKeVd1SWs3eHVPWW8vNkJiQnFQRVFHYll0N2V4OHJIdnBMWmlJUUE9In0=";
+    
+        await expect(zkm.connect(owner).regiserGroup(emptyH, kpPub, signature)).to.be.revertedWith("h must not be empty");
       });
 
       it("Should fail when trying to register a group with an empty kpPub", async function () {
         const { zkm, owner } = await loadFixture(deployContract);  
         const h = "IGBm3pCN+GdujqYteTWGAddoA2ok03QqELPGC4RsMlgtC4SMq+329hGZOODHKduGCsSpxL2G4hAsACLI9WJ0zhNf9r6WbuauLMEHZc+DbTpBHCHK2T4dbiujnrHVxTKML9ni9PJnTBanSQM2ggax+H1+8oM2qiVmU1AB0ufhbdE=";
         const emptyKpPub = "";
-        const signatures = [
-          {
-            id: "500085520751",
-            signature: "ITugvC40rtDRSlEJhy1XN8gfX/K1TMylzdO4CapA3EwJ+3+V4FS4DGbbel+eDldg7m2kZMmdaC92rJ5lhnzywSKUO5KYkSuv3EOuGv8MeTY7Y1xTAKPX4nlKaIjiFegBLKh1wys4MbaHx92awvi3nZYD+Z95Cc3yAA25P+gEC+g="
-          },
-          {
-            id: "1634302581",
-            signature: "HZZEK4e41bbmXjsX2DkIReXeP2cUEXejMARv9vqVjdYO6IjpYUfP1uwcvhgWy0xnYMAZckvP0y+cFwdP2urdvgCzR80a+tAjVHydrMB6xn5u3tasvXVc4UiOPqL7379xGZSjYKsf4nDd9apyq9gOjn6ECUrV2JqyD9ZuNYHPuxk=",
-          },
-          {
-            id: "440056640873",
-            signature: "Byp+fyCRyDLIUz+/wzePacemjB7gNhZasNqR5fksGsMUnHMWqa68w8ItMixEDNegBf4VkYBGQenlDaSKX9Dv2xammUPwRK8822D83Ty5dAatS24l8KyRxDrT+cIZDRvXGuWTViIbmHdG76SNpwqHAkAaGcTBAlkFPlXOQO+imLw=",
-          },
-        ];
-
-        await expect(zkm.connect(owner).regiserGroup(h, emptyKpPub, signatures)).to.be.revertedWith("kpPub must not be empty");
+        const signature = "eyIxNjM0MzAyNTgxIjoiRW16UUUwZ3REM0lpZVRxYlJ0M1NwY3Q2TjF3UytiQnVDMG5DOUFDL2Vib2lxeE1jTVpCcnBjODFqU3pqWjJGYWtMa3NkWGoyWVJhcjRzMHhhSHM4RkFmNmFBb0hYY2pod2xJdU9Ra0JacG9uNGhod0VvWHgxKy9XR0RlenBiTCtCdmc4RWlIN2o2bEhzcUZxa1FBUzhxWjhYMlF6N0NtNU12MzA5M1RWNTA0PSIsIjQ2OTkyMDUzODk4NSI6IkZwN0hhTTQwdVlRSVBWYk1qR2doRkQ1UlNxMWZ6akhtdVJpVVdISnRxcEFPZGVDQjVNRGFYenUrNVo2TUF4YnJab3hCdkFLcjVrcnR2RzNaU3lSTlNDU083ODhTN2xxaWdaaEJPc0lheTNGRzdGNXZJbmJaQUNWeHhxeGF0akRmR3kwdDl4SGdnOFZINTJmQlBwbk12VXY0aGFBYm5kYzZJSk44N1JSY2M0ST0iLCI1MDAwODU1MjA3NTEiOiJIQTdFcmZvRnliMmg1azEzY1B3aU1tSVBYb2FWRXpvaG9uTE10T01wRGN3YXhoaC92VjZnTEhoNUdDcTloOFJGMm1ZeStrV3p1a2ZKMFZWRWtEWGNZU1hFd2pFNlZtMWRjTnlBZTRmUDMxWG9MbE5NMVFVY0dvK3U3MTJPcm0zOEtzMGVKeVd1SWs3eHVPWW8vNkJiQnFQRVFHYll0N2V4OHJIdnBMWmlJUUE9In0=";
+    
+        await expect(zkm.connect(owner).regiserGroup(h, emptyKpPub, signature)).to.be.revertedWith("kpPub must not be empty");
       });
   
       it("Should fail when trying to register a group with empty signatures", async function () {
         const { zkm, owner } = await loadFixture(deployContract);
         const h = "IGBm3pCN+GdujqYteTWGAddoA2ok03QqELPGC4RsMlgtC4SMq+329hGZOODHKduGCsSpxL2G4hAsACLI9WJ0zhNf9r6WbuauLMEHZc+DbTpBHCHK2T4dbiujnrHVxTKML9ni9PJnTBanSQM2ggax+H1+8oM2qiVmU1AB0ufhbdE=";
         const kpPub = "GQv2/s3OU3Tiz+LQeBn5xbEnmvUObALQl1+D5PGN5hkTJFHSloQL8fMLLizCag7ZrbWj3fdgGdnTJ/6tWz0smw==";
-        const emptySignatures = [];
-        await expect(zkm.connect(owner).regiserGroup(h, kpPub, emptySignatures)).to.be.revertedWith("signatures must not be empty");
+        const emptySignature = "";
+        await expect(zkm.connect(owner).regiserGroup(h, kpPub, emptySignature)).to.be.revertedWith('signature must not be empty');
       });
   
       it("Should register multiple groups with valid data", async function () {
@@ -117,42 +74,22 @@ describe("ZkMoku", function () {
           {
             h: "testH1",
             kpPub: "testKpPub1",
-            signatures: [
-              {
-                id: "1",
-                signature: "testSig"
-              }
-            ]
+            signature: "testSig"
           },
           {
             h: "testH2",
             kpPub: "testKpPub2",
-            signatures: [
-              {
-                id: "2",
-                signature: "testSig2"
-              },
-              {
-                id: "3",
-                signature: "testSig3"
-              }
-            ]
+            signature: "testSig"
           }
         ];
       
         for (let i = 0; i < groupsData.length; i++) {
-          const { h, kpPub, signatures } = groupsData[i];
-          await zkm.connect(owner).regiserGroup(h, kpPub, signatures);
+          const { h, kpPub, signature } = groupsData[i];
+          await zkm.connect(owner).regiserGroup(h, kpPub, signature);
           const group = await zkm.getGroup(i);
           expect(group.h).to.equal(h);
           expect(group.kpPub).to.equal(kpPub);
-          expect(group.signatures.length).to.equal(signatures.length);
-          for (let j = 0; j < signatures.length; j++) {
-            expect(group.signatures[j].v).to
-            expect(group.signatures[j].v).to.equal(signatures[j].v);
-            expect(group.signatures[j].r).to.equal(signatures[j].r);
-            expect(group.signatures[j].s).to.equal(signatures[j].s);
-          }
+          expect(group.signature).to.equal(signature);
         }
       });
     });
@@ -162,22 +99,9 @@ describe("ZkMoku", function () {
         const { zkm, owner } = await loadFixture(deployContract);  
         const h = "IGBm3pCN+GdujqYteTWGAddoA2ok03QqELPGC4RsMlgtC4SMq+329hGZOODHKduGCsSpxL2G4hAsACLI9WJ0zhNf9r6WbuauLMEHZc+DbTpBHCHK2T4dbiujnrHVxTKML9ni9PJnTBanSQM2ggax+H1+8oM2qiVmU1AB0ufhbdE=";
         const kpPub = "GQv2/s3OU3Tiz+LQeBn5xbEnmvUObALQl1+D5PGN5hkTJFHSloQL8fMLLizCag7ZrbWj3fdgGdnTJ/6tWz0smw==";
-        const signatures = [
-          {
-            id: "500085520751",
-            signature: "ITugvC40rtDRSlEJhy1XN8gfX/K1TMylzdO4CapA3EwJ+3+V4FS4DGbbel+eDldg7m2kZMmdaC92rJ5lhnzywSKUO5KYkSuv3EOuGv8MeTY7Y1xTAKPX4nlKaIjiFegBLKh1wys4MbaHx92awvi3nZYD+Z95Cc3yAA25P+gEC+g="
-          },
-          {
-            id: "1634302581",
-            signature: "HZZEK4e41bbmXjsX2DkIReXeP2cUEXejMARv9vqVjdYO6IjpYUfP1uwcvhgWy0xnYMAZckvP0y+cFwdP2urdvgCzR80a+tAjVHydrMB6xn5u3tasvXVc4UiOPqL7379xGZSjYKsf4nDd9apyq9gOjn6ECUrV2JqyD9ZuNYHPuxk=",
-          },
-          {
-            id: "440056640873",
-            signature: "Byp+fyCRyDLIUz+/wzePacemjB7gNhZasNqR5fksGsMUnHMWqa68w8ItMixEDNegBf4VkYBGQenlDaSKX9Dv2xammUPwRK8822D83Ty5dAatS24l8KyRxDrT+cIZDRvXGuWTViIbmHdG76SNpwqHAkAaGcTBAlkFPlXOQO+imLw=",
-          },
-        ];
+        const signature = "eyIxNjM0MzAyNTgxIjoiRW16UUUwZ3REM0lpZVRxYlJ0M1NwY3Q2TjF3UytiQnVDMG5DOUFDL2Vib2lxeE1jTVpCcnBjODFqU3pqWjJGYWtMa3NkWGoyWVJhcjRzMHhhSHM4RkFmNmFBb0hYY2pod2xJdU9Ra0JacG9uNGhod0VvWHgxKy9XR0RlenBiTCtCdmc4RWlIN2o2bEhzcUZxa1FBUzhxWjhYMlF6N0NtNU12MzA5M1RWNTA0PSIsIjQ2OTkyMDUzODk4NSI6IkZwN0hhTTQwdVlRSVBWYk1qR2doRkQ1UlNxMWZ6akhtdVJpVVdISnRxcEFPZGVDQjVNRGFYenUrNVo2TUF4YnJab3hCdkFLcjVrcnR2RzNaU3lSTlNDU083ODhTN2xxaWdaaEJPc0lheTNGRzdGNXZJbmJaQUNWeHhxeGF0akRmR3kwdDl4SGdnOFZINTJmQlBwbk12VXY0aGFBYm5kYzZJSk44N1JSY2M0ST0iLCI1MDAwODU1MjA3NTEiOiJIQTdFcmZvRnliMmg1azEzY1B3aU1tSVBYb2FWRXpvaG9uTE10T01wRGN3YXhoaC92VjZnTEhoNUdDcTloOFJGMm1ZeStrV3p1a2ZKMFZWRWtEWGNZU1hFd2pFNlZtMWRjTnlBZTRmUDMxWG9MbE5NMVFVY0dvK3U3MTJPcm0zOEtzMGVKeVd1SWs3eHVPWW8vNkJiQnFQRVFHYll0N2V4OHJIdnBMWmlJUUE9In0=";
   
-        await zkm.connect(owner).regiserGroup(h, kpPub, signatures);
+        await zkm.connect(owner).regiserGroup(h, kpPub, signature);
       
         const proof = {
             v: "FJEt9RyDUXSa+OQXBLf7NR7vEbfFhglh4Ugcpdb0OugkF1JWi0qrAMtFJC1SuSBtYqG/Y1SFtR6zOL2XQ2QLGAyuA5fjgamNqsg7BW5Eny2Q9K1Abfjjhf+C9uFLfnHHLafV8tuqZtg+4NHd6p+Kf8Yutd5u0VKMZONRP63G46A=",
