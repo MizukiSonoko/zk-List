@@ -49,7 +49,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
         setLoading(false);
       }
     }
-  }, [isConnected, address, loading]);
+  }, [isConnected, address, loading, provider]);
   
 
   if (activeTab === 'SetUp') {
