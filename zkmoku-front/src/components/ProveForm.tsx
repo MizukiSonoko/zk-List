@@ -11,7 +11,7 @@ import { GroupItem } from '@/types/GroupItem';
 import { contractAddr } from '@/utils/contract';
 
 const ProveForm: React.FC = () => {
-  const groupList: GroupItem[] = [];
+  const [groupList, setGroupList] = useState<GroupItem[]>([]);
   
   const { data, isError, isLoading, refetch } = useContractRead({
     address: contractAddr,
@@ -19,12 +19,13 @@ const ProveForm: React.FC = () => {
     functionName: 'getGroups',
     onSuccess: (data: any) => {
       console.log("data: ", data);
+      var temp: GroupItem[] = [];
       (data as unknown as any).map((group: any) => {
         const decodedBase64 = decodeBase64(group.signature);
         const belongs: { key: string, value: string, name: string }[]=
           Object.entries(JSON.parse(decodedBase64)).
             map(([key, value]) => ({ key, value: value as string, name: "" }));
-        groupList.push({
+        temp.push({
           name: group.name,
           content: belongs.map((v: { key: string, value: string, name: string }) => bigIntToAscii(BigInt(v.key))),
           belongs: belongs.map((v: { key: string, value: string, name: string }) => 
@@ -33,6 +34,7 @@ const ProveForm: React.FC = () => {
           h: group.h,
           pub: group.kpPub,
         });
+        setGroupList(temp);
       });    
     }
   });
