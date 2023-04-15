@@ -15,14 +15,14 @@ message SetUpRequest {
 
 message SetUpResponse {
   string H = 1;
-  repeated Signature signatures = 2;
+  string signature = 2;
   string KpPubk = 3;
 }
 
 message ProveRequest {
   string H = 1;
   string pub = 2;
-  repeated Signature signatures = 3;
+  string signature = 3;
   int64 val = 4;
 }
 

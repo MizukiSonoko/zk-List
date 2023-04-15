@@ -96,9 +96,9 @@ export class SetUpResponse extends Message<SetUpResponse> {
   H = "";
 
   /**
-   * @generated from field: repeated api.v1.Signature signatures = 2;
+   * @generated from field: string signature = 2;
    */
-  signatures: Signature[] = [];
+  signature = "";
 
   /**
    * @generated from field: string KpPubk = 3;
@@ -114,7 +114,7 @@ export class SetUpResponse extends Message<SetUpResponse> {
   static readonly typeName = "api.v1.SetUpResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "H", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "signatures", kind: "message", T: Signature, repeated: true },
+    { no: 2, name: "signature", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "KpPubk", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
@@ -150,9 +150,9 @@ export class ProveRequest extends Message<ProveRequest> {
   pub = "";
 
   /**
-   * @generated from field: repeated api.v1.Signature signatures = 3;
+   * @generated from field: string signature = 3;
    */
-  signatures: Signature[] = [];
+  signature = "";
 
   /**
    * @generated from field: int64 val = 4;
@@ -169,7 +169,7 @@ export class ProveRequest extends Message<ProveRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "H", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "pub", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "signatures", kind: "message", T: Signature, repeated: true },
+    { no: 3, name: "signature", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "val", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 

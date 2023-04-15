@@ -3,6 +3,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 
 	connect_go "github.com/bufbuild/connect-go"
 	"github.com/mizukisonoko/zkmoku/errors"
@@ -41,6 +42,7 @@ func (a *API) SetUp(ctx context.Context, req *connect_go.Request[apiv1.SetUpRequ
 		log.WithContext(ctx).Info("failed to set up usecase", zap.Error(err))
 		return nil, connect_go.NewError(connect_go.CodeInternal, failure.New(errors.Internal))
 	}
+	fmt.Printf("response: %v\n", resp)
 	return connect_go.NewResponse(resp), nil
 }
 
@@ -52,6 +54,7 @@ func (a *API) Prove(ctx context.Context, req *connect_go.Request[apiv1.ProveRequ
 	if err != nil {
 		return nil, connect_go.NewError(connect_go.CodeInternal, failure.New(errors.Internal))
 	}
+	fmt.Printf("!response: %v\n", resp)
 	return connect_go.NewResponse(resp), nil
 }
 
@@ -59,6 +62,7 @@ func (a *API) Verify(ctx context.Context, req *connect_go.Request[apiv1.VerifyRe
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
+
 	resp, err := usecase.Verify(ctx, req.Msg)
 	if err != nil {
 		return nil, connect_go.NewError(connect_go.CodeInternal, failure.New(errors.Internal))

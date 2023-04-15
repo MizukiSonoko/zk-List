@@ -4,6 +4,7 @@ import (
 	"context"
 
 	b64 "encoding/base64"
+	"encoding/json"
 
 	"github.com/MizukiSonoko/zkproofs/go-ethereum/zkproofs"
 	apiv1 "github.com/mizukisonoko/zkmoku/gen/proto"
@@ -14,17 +15,14 @@ func SetUp(ctx context.Context, req *apiv1.SetUpRequest) (*apiv1.SetUpResponse, 
 	if err != nil {
 		return nil, err
 	}
-	var sigs []*apiv1.Signature
+	sigs := make(map[int64]interface{})
 	for k, v := range p.Signatures {
-		// Memo: p.Signatures is map[int]*bn256.G1, not slice!
-		sigs = append(sigs, &apiv1.Signature{
-			Id:        k,
-			Signature: b64.StdEncoding.EncodeToString(v.Marshal()),
-		})
+		sigs[k] = v.Marshal()
 	}
+	jsonSigs, _ := json.Marshal(sigs)
 	return &apiv1.SetUpResponse{
-		H:          b64.StdEncoding.EncodeToString(p.H.Marshal()),
-		Signatures: sigs,
-		KpPubk:     b64.StdEncoding.EncodeToString(p.Kp.Pubk.Marshal()),
+		H:         b64.StdEncoding.EncodeToString(p.H.Marshal()),
+		Signature: b64.StdEncoding.EncodeToString(jsonSigs),
+		KpPubk:    b64.StdEncoding.EncodeToString(p.Kp.Pubk.Marshal()),
 	}, nil
 }
