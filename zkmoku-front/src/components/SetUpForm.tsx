@@ -2,36 +2,37 @@
 import React, { useState } from 'react';
 import { useClient } from '@/components/Backend/BackendProvider';
 import { ZkMokuService } from '@/proto/api_connectweb';
+import { asciiToBigInt, bigIntToAscii } from '@/utils/converters';
 
 const SetUpForm: React.FC = () => {
-  const [numbers, setNumbers] = useState([0, 0, 0]);
+  const [names, setNames] = useState(['', '', '']);
   const [response, setResponse] = useState('');
   const client = useClient(ZkMokuService);
 
-  const handleNumberChange = (index: number, value: number) => {
-    setNumbers((prevNumbers) => {
-      const newNumbers = [...prevNumbers];
-      newNumbers[index] = value;
-      return newNumbers;
+  const handleNumberChange = (index: number, value: string) => {
+    setNames((prevNames) => {
+      const newNames = [...prevNames];
+      newNames[index] = value;
+      return newNames;
     });
   };
 
   const handleAddNumber = () => {
-    setNumbers([...numbers, 0]);
+    setNames([...names, '']);
   };
 
   const handleRemoveNumber = () => {
-    if (numbers.length > 1) {
-      setNumbers(numbers.slice(0, -1));
+    if (names.length > 1) {
+      setNames(names.slice(0, -1));
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitted numbers:', numbers);
+    console.log('Submitted numbers:', names);
     client
       .setUp({
-        ids: numbers.map((number) => BigInt(number)),
+        ids: names.map((number) => asciiToBigInt(number)),
       })
       .then((resp) => {
         console.log("OK!", resp.toJsonString());
@@ -43,13 +44,13 @@ const SetUpForm: React.FC = () => {
     <form onSubmit={handleSubmit}>
       <table>
         <tbody>
-          {numbers.map((number, index) => (
+          {names.map((name, index) => (
             <tr key={index}>
               <td>
                 <input
-                  type="number"
-                  value={number}
-                  onChange={(e) => handleNumberChange(index, parseInt(e.target.value))}
+                  type="text"
+                  value={name}
+                  onChange={(e) => handleNumberChange(index, e.target.value)}
                 />
               </td>
             </tr>
