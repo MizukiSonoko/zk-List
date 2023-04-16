@@ -14,7 +14,10 @@ interface SetUpResp {
 };
 
 const SetUpForm: React.FC = () => {
+
+  const [error, setError] = React.useState('')
   const [names, setNames] = useState(['', '', '']);
+  const [isValid, setIsValids] = useState([false, false, false]);
   const [response, setResponse] = useState<SetUpResp>({
     H: '',
     KpPubk: '',
@@ -41,6 +44,15 @@ const SetUpForm: React.FC = () => {
   
   
   const handleNumberChange = (index: number, value: string) => {
+    setIsValids((prevIsValids) => {
+      const newIsValids = [...prevIsValids];
+      if(value.length > 0) {
+        newIsValids[index] = asciiToBigInt(value) < 9223372036854775807;
+      } else {
+        newIsValids[index] = false;
+      }
+      return newIsValids;
+    });
     setNames((prevNames) => {
       const newNames = [...prevNames];
       newNames[index] = value;
@@ -50,11 +62,13 @@ const SetUpForm: React.FC = () => {
 
   const handleAddNumber = () => {
     setNames([...names, '']);
+    setIsValids([...isValid, false]);
   };
 
   const handleRemoveNumber = () => {
     if (names.length > 1) {
       setNames(names.slice(0, -1));
+      setIsValids(isValid.slice(0, -1));
     }
   };
 
@@ -64,6 +78,11 @@ const SetUpForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if(isValid.includes(false)) {
+      setError('Invalid input too large or empty input');
+      return;
+    }
+    setError('');
     console.log('Submitted numbers:', names);
     client
       .setUp({
@@ -93,7 +112,7 @@ const SetUpForm: React.FC = () => {
           onChange={(e) => setGroupName(e.target.value)} />
       </div>
       <div className='mt-4 mb-1'>
-        <label htmlFor="group_name" className="block mb-2 text-base font-medium text-gray-900">Group Elements</label>
+        <label htmlFor="group_name" className="block mb-2 text-base font-medium text-gray-900">Group Elements (currently, short term supported)</label>
         <table className="hover:table-auto w-full">
           <thead>
             <tr>
@@ -109,7 +128,7 @@ const SetUpForm: React.FC = () => {
                 </td>
                 <td>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className={`${isValid[index] ? 'border-green-500' : 'border-red-500'} "shadow appearance-none border-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"`}
                     type="text"
                     value={name}
                     onChange={(e) => handleNumberChange(index, e.target.value)}
@@ -131,6 +150,11 @@ const SetUpForm: React.FC = () => {
           <button className="text-right rounded-md px-3 py-1 bg-blue-500 text-white font-bold" type="submit">SetUp</button>
         </div>
       </div>
+      {error.length !== 0 &&
+        <div className='my-4 text-right text-red-500 font-bold'>
+          {error}
+        </div>
+      }
       {response.H.length !== 0 && 
         <div className='my-4 border-2 border-gray-300 p-2 break-words'>
           <p>H:</p>
