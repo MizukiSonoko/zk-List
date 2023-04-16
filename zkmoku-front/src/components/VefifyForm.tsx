@@ -18,10 +18,17 @@ interface ProofTableListProps {
 
 const VerifyForm: React.FC<ProofTableListProps> = ({tokenList,groupList,setVerifyWalletAddr}) => {
   const [walletAddr, setWalletAddr] = useState<string>("");
-
+  const [isValidWalletAddr, setIsValidWalletAddr] = useState<boolean>(false);
 
   useEffect(
-    () => setVerifyWalletAddr(walletAddr),
+    () => {
+      if(walletAddr.length === 42) {
+        setVerifyWalletAddr(walletAddr);
+        setIsValidWalletAddr(true);
+      } else {
+        setIsValidWalletAddr(false);
+      }
+    },
     [setVerifyWalletAddr, walletAddr]
   );
 
@@ -37,7 +44,7 @@ const VerifyForm: React.FC<ProofTableListProps> = ({tokenList,groupList,setVerif
       <input 
           type="text"
           id="group_name"
-          className="shadow appearance-none border rounded w-1/2 py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className={`${isValidWalletAddr ? 'border-green-500' : 'border-red-500'} "shadow appearance-none border-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"`}
           value={walletAddr}
           onChange={(e) => setWalletAddr(e.target.value)} />          
       <p className="text-base">Current Groups</p>
